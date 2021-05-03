@@ -1,0 +1,156 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  branches:
+    include:
+    - dev
+    - qa
+    - prod
+
+variables:
+  solution: 'Pocs.HealthCheck/Pocs.HealthCheck.csproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+
+stages:
+- ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
+  - stage: BuildDev
+    displayName: Build-Dev
+    jobs:
+    - job: Build
+      pool:
+        vmImage: 'windows-latest'
+      steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            git diff --diff-filter=AMR --name-only remotes/origin/prod remotes/origin/dev > Artifact.txt #diff filter is deselecting deleted files
+            countOfJsonFiles=$(wc -l Artifact.txt | awk '{ print $1 }' ) #count number of lines
+            echo "Number of JSON Files = "$countOfJsonFiles
+            echo "---JSON files with complete path---"
+            cat Artifact.txt
+            mkdir Artifact/
+            while IFS= read -r Artifact; do
+              git checkout dev
+              cp --parents $Artifact Artifact/  #copy with complete path. Will create folders if not exists
+            done < Artifact.txt
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)/Artifact'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          CleanTargetFolder: true
+          OverWrite: true
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'Notebooks-DEV'
+          publishLocation: 'Container'
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet build'
+        inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '/p:Configuration=Release'
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'HealthCheck/'
+          Contents: 'Pocs.HealthCheck/*.yaml'
+          TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
+          CleanTargetFolder: true
+          OverWrite: true
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'HealthCheck/'
+          Contents: 'Pocs.HealthCheck/Dockerfile'
+          TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
+          OverWrite: true
+      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
+        displayName: 'Command Line Script'
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          replaceExistingArchive: true
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          ArtifactName: '$(Parameters.ArtifactName)'
+          publishLocation: 'Container'
+        condition: succeededOrFailed()
+
+  - stage: UnitTestDev
+    displayName: Unit Test Dev
+    dependsOn: BuildDev
+    jobs:
+    - job: UnitTest
+      pool:
+        vmImage: 'windows-latest'
+      steps:
+      - script: echo running UnitTest
+
+  - stage: Deploy_Dev
+    dependsOn: UnitTestDev
+    ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
+      condition: and(succeeded(), true)
+    ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  
+      condition: false
+    ${{ if contains(variables['Build.SourceBranch'], 'prod') }}:  
+      condition: false
+    ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
+      condition: false
+    jobs:
+    - deployment: release_dev
+      variables: 
+        - name: ResourceGroupName
+          value: 'pocrasp-dev'
+        - name: bearerToken
+          value: 'dapicfc9d155201b4634b4e3a8e656bfacdb-2'
+        - name: 'azureSubscription'
+          value: 'Assinatura do Visual Studio Enterprise – MPN (a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+
+      pool:
+        vmImage: 'windows-latest'
+      environment: dev
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - script: echo running UnitTest
+            - task: TerraformInstaller@0
+              displayName: 'TF install'
+              inputs:
+                terraformVersion: '0.12.3'
+
+            - task: TerraformTaskV1@0
+              displayName: 'TF Initi'
+              inputs:
+                provider: 'azurerm'
+                command: 'init'
+                workingDirectory: '$(System.DefaultWorkingDirectory)diretorio'
+                backendServiceArm: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+                backendAzureRmResourceGroupName: 'storage'
+                backendAzureRmStorageAccountName: 'ststudyheider'
+                backendAzureRmContainerName: 'terra'
+                backendAzureRmKey: 'pocrasp'
+            
+            - task: TerraformTaskV1@0
+              inputs:
+                provider: 'azurerm'
+                command: 'plan'
+                workingDirectory: '$(System.DefaultWorkingDirectory)diretorio'
+            
+            - task: TerraformTaskV1@0
+              inputs:
+                provider: 'azurerm'
+                command: 'apply'
+            

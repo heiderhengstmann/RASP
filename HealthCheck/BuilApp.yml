@@ -25,9 +25,6 @@ steps:
     publishWebProjects: true
     arguments: '/p:Configuration=Release'
 
-
-
-
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'HealthCheck/'
@@ -43,12 +40,9 @@ steps:
     TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
     OverWrite: true
 
-
-
 - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
 
   displayName: 'Command Line Script'
-
 
 - task: ArchiveFiles@2
   inputs:

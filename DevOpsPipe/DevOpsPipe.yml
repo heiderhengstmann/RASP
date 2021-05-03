@@ -131,6 +131,7 @@ stages:
                 command: 'apply'
                 workingDirectory: 'tf'
                 commandOptions: 'dev'
+                environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
 
   - stage: BuildImage
     displayName: Build-img

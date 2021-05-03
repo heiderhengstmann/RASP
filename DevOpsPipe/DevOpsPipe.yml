@@ -110,7 +110,7 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'init'
-                workingDirectory: '$(System.DefaultWorkingDirectory)diretorio'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/dev/tf'
                 backendServiceArm: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
                 backendAzureRmResourceGroupName: 'storage'
                 backendAzureRmStorageAccountName: 'ststudyheider'
@@ -121,7 +121,7 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'plan'
-                workingDirectory: '$(System.DefaultWorkingDirectory)diretorio'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/dev/tf'
 
             - task: TerraformTaskV1@0
               inputs:

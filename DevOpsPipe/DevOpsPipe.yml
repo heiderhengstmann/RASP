@@ -86,8 +86,6 @@ stages:
       variables: 
         - name: ResourceGroupName
           value: 'pocrasp-dev'
-        - name: bearerToken
-          value: 'dapicfc9d155201b4634b4e3a8e656bfacdb-2'
         - name: 'azureSubscription'
           value: 'Assinatura do Visual Studio Enterprise – MPN (a45048d3-69a8-4e2d-89a9-4585441c96f6)'
 

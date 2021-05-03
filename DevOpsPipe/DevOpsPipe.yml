@@ -109,20 +109,22 @@ stages:
                 provider: 'azurerm'
                 command: 'init'
                 workingDirectory: 'tf'
-                #environmentServiceNameAzureRM: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
-                backendServiceArm: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+                backendServiceArm: ${{ variables.azureSubscription  }}
                 backendAzureRmResourceGroupName: 'storage'
                 backendAzureRmStorageAccountName: 'ststudyheider'
                 backendAzureRmContainerName: 'terra'
                 backendAzureRmKey: 'pocrasp'
 
             - task: TerraformTaskV1@0
+              displayName: 'TF Plan'
               inputs:
                 provider: 'azurerm'
                 command: 'plan'
                 workingDirectory: 'tf'
+                environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
 
             - task: TerraformTaskV1@0
+              displayName: 'TF Apply'
               inputs:
                 provider: 'azurerm'
                 command: 'apply'

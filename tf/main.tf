@@ -25,6 +25,7 @@ resource "azurerm_resource_group" "dev" {
 }
 
 
+
 resource "azurerm_api_management" "API" {
   name                = "pocraspapim"
   location            = azurerm_resource_group.dev.location

@@ -108,7 +108,7 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'init'
-                workingDirectory: 'dev/tf'
+                workingDirectory: 'tf'
                 backendServiceArm: ${{ variables.azureSubscription  }}
                 backendAzureRmResourceGroupName: 'storage'
                 backendAzureRmStorageAccountName: 'ststudyheider'

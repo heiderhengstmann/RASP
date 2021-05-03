@@ -28,9 +28,9 @@ stages:
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'
         inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '/p:Configuration=Release'
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '/p:Configuration=Release'
       - task: CopyFiles@2
         inputs:
           SourceFolder: 'HealthCheck/'

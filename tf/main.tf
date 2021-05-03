@@ -1,20 +1,12 @@
-# Configure the Azure provider
 terraform {
-  required_providers {
-    azurerm = {
-      source = "hashicorp/azurerm"
-      version = ">= 2.26"
-    }
-  }
   backend "remote" {
     organization = "hhengstman"
 
     workspaces {
-      name = "pocrasp"
+      name = "rasp"
     }
   }
 }
-
 provider "azurerm" {
   features {}
 }

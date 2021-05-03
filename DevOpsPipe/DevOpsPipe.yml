@@ -119,7 +119,7 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'plan'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/dev/tf'
+                workingDirectory: 'tf'
 
             - task: TerraformTaskV1@0
               inputs:

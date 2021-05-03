@@ -129,6 +129,7 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'apply'
+                workingDirectory: 'tf'
                 commandOptions: 'dev'
 
   - stage: BuildImage

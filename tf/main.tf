@@ -1,10 +1,9 @@
 terraform {
-  backend "remote" {
-    organization = "hhengstman"
-
-    workspaces {
-      name = "rasp"
-    }
+  backend "azurerm" {
+    resource_group_name  = "storage"
+    storage_account_name = "ststudyheider"
+    container_name       = "terra"
+    #key                  = "testimport.terraform.tfstate"
   }
 }
 provider "azurerm" {

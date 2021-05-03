@@ -3,7 +3,7 @@ terraform {
     resource_group_name  = "storage"
     storage_account_name = "ststudyheider"
     container_name       = "terra"
-    key                  = "rasptf.terraform.tfstate"
+    key                  = "pocrasp.terraform.tfstate"
   }
 }
 provider "azurerm" {

@@ -71,7 +71,7 @@ stages:
       steps:
       - script: echo running UnitTest
 
-  - stage: Deploy_Dev
+  - stage: Foundation
     dependsOn: UnitTestDev
     ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
       condition: and(succeeded(), true)
@@ -127,3 +127,17 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'apply'
+
+  - stage: BuildImage
+    displayName: Build-img
+    jobs:
+    - job: Build
+      pool:
+        vmImage: 'windows-latest'
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'ACR'
+          repository: 'rasp'
+          command: 'buildAndPush'
+          Dockerfile: 'HealthCheck/Pocs.HealthCheck//Dockerfile/Dockerfile'

@@ -21,7 +21,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "dev" {
   name     = "pocrasp-dev"
-  location = "brasilsouth"
+  location = "brazilsouth"
 }
 
 

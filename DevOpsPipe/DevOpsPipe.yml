@@ -121,6 +121,7 @@ stages:
                 provider: 'azurerm'
                 command: 'plan'
                 workingDirectory: 'tf'
+                commandOptions: '-out dev'
                 environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
 
             - task: TerraformTaskV1@0
@@ -128,6 +129,7 @@ stages:
               inputs:
                 provider: 'azurerm'
                 command: 'apply'
+                commandOptions: 'dev'
 
   - stage: BuildImage
     displayName: Build-img

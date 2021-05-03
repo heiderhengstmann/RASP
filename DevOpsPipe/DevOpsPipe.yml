@@ -87,7 +87,7 @@ stages:
         - name: ResourceGroupName
           value: 'pocrasp-dev'
         - name: 'azureSubscription'
-          value: 'Assinatura do Visual Studio Enterprise – MPN (a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+          value: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
 
       pool:
         vmImage: ubuntu-16.04

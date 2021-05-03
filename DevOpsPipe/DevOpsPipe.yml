@@ -25,32 +25,6 @@ stages:
       pool:
         vmImage: 'windows-latest'
       steps:
-      - task: Bash@3
-        inputs:
-          targetType: 'inline'
-          script: |
-            git diff --diff-filter=AMR --name-only remotes/origin/prod remotes/origin/dev > Artifact.txt #diff filter is deselecting deleted files
-            countOfJsonFiles=$(wc -l Artifact.txt | awk '{ print $1 }' ) #count number of lines
-            echo "Number of JSON Files = "$countOfJsonFiles
-            echo "---JSON files with complete path---"
-            cat Artifact.txt
-            mkdir Artifact/
-            while IFS= read -r Artifact; do
-              git checkout dev
-              cp --parents $Artifact Artifact/  #copy with complete path. Will create folders if not exists
-            done < Artifact.txt
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: '$(Build.SourcesDirectory)/Artifact'
-          Contents: '**'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
-          CleanTargetFolder: true
-          OverWrite: true
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'Notebooks-DEV'
-          publishLocation: 'Container'
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'
         inputs:
@@ -142,15 +116,14 @@ stages:
                 backendAzureRmStorageAccountName: 'ststudyheider'
                 backendAzureRmContainerName: 'terra'
                 backendAzureRmKey: 'pocrasp'
-            
+
             - task: TerraformTaskV1@0
               inputs:
                 provider: 'azurerm'
                 command: 'plan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)diretorio'
-            
+
             - task: TerraformTaskV1@0
               inputs:
                 provider: 'azurerm'
                 command: 'apply'
-            

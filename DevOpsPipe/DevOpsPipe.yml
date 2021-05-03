@@ -149,4 +149,4 @@ stages:
           containerRegistry: 'ACR'
           repository: 'rasp'
           command: 'buildAndPush'
-          Dockerfile: 'HealthCheck/Pocs.HealthCheck//Dockerfile/Dockerfile'
+          Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: gftprocess
+  name: healthcheck
+  labels:
+    app: healthcheck
+    produto: process
+spec:
+  replicas: 3
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: healthcheck
+  template:
+    metadata:
+      labels:
+        app: healthcheck
+        produto: gamora
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: healthcheck
+        image: acrsharedheider.azurecr.io/heider/gftprocess:{{TAG_VERSION}}
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: {{ENVIRONMENT}}
+        resources:
+          requests:
+            memory: "10Mi"
+            cpu: "10m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: pv
+            mountPath: /app 
+      imagePullSecrets:
+        - name: k8s-secret
+      volumes:
+        - name: pv
+          persistentVolumeClaim:
+            claimName: pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-healthcheck
+  namespace: gftprocess
+  labels:
+    app: healthcheck
+    produto: process
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: healthcheck

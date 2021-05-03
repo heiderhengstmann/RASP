@@ -1,0 +1,67 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- develop
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+variables:
+  solution: 'Pocs.HealthCheck/Pocs.HealthCheck.csproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: DotNetCoreCLI@2
+
+  displayName: 'dotnet build'
+
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '/p:Configuration=Release'
+
+
+
+
+- task: CopyFiles@2
+  inputs:
+    Contents: 'Pocs.HealthCheck/*.yaml'
+    TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
+    CleanTargetFolder: true
+    OverWrite: true
+
+- task: CopyFiles@2
+  inputs:
+    Contents: 'Pocs.HealthCheck/Dockerfile'
+    TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
+    OverWrite: true
+
+
+
+- script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
+
+  displayName: 'Command Line Script'
+
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+
+  displayName: 'Publish Artifact'
+
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    ArtifactName: '$(Parameters.ArtifactName)'
+    publishLocation: 'Container'
+  condition: succeededOrFailed()

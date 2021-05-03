@@ -110,7 +110,7 @@ stages:
                 command: 'init'
                 workingDirectory: 'tf'
                 #environmentServiceNameAzureRM: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
-                backendServiceArm: 'a45048d3-69a8-4e2d-89a9-4585441c96f6'
+                backendServiceArm: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
                 backendAzureRmResourceGroupName: 'storage'
                 backendAzureRmStorageAccountName: 'ststudyheider'
                 backendAzureRmContainerName: 'terra'

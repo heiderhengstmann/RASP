@@ -10,8 +10,7 @@ terraform {
     organization = "hhengstman"
 
     workspaces {
-      name = "pocrasp
-"
+      name = "pocrasp"
     }
   }
 }

@@ -141,6 +141,9 @@ stages:
           repository: 'rasp'
           command: 'buildAndPush'
           Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
 
   - stage: DeployAKS
     dependsOn: BuildImage

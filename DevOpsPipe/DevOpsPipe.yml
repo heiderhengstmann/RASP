@@ -73,6 +73,8 @@ stages:
       condition: false
     jobs:
     - deployment: release_dev
+      strategy:
+       maxParallel: 2
       variables: 
         - name: ResourceGroupName
           value: 'pocrasp-dev'
@@ -125,6 +127,7 @@ stages:
 
   - stage: BuildImage
     displayName: Build-img
+    dependsOn: Foundation
     jobs:
     - job: Build
       pool:

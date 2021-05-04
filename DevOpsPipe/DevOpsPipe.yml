@@ -73,8 +73,6 @@ stages:
       condition: false
     jobs:
     - deployment: release_dev
-      strategy:
-       maxParallel: 2
       variables: 
         - name: ResourceGroupName
           value: 'pocrasp-dev'

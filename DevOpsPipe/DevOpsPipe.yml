@@ -147,6 +147,6 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'ACR'
-          repository: 'rasp'
+          repository: 'pocraspacr'
           command: 'buildAndPush'
           Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'

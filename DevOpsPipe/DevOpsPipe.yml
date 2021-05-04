@@ -44,7 +44,7 @@ stages:
           Contents: 'Pocs.HealthCheck/Dockerfile'
           TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
           OverWrite: true
-      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
+      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
       - task: ArchiveFiles@2
         inputs:

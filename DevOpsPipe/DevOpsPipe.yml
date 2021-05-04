@@ -61,16 +61,6 @@ stages:
           publishLocation: 'Container'
         condition: succeededOrFailed()
 
-  - stage: UnitTestDev
-    displayName: Unit Test Dev
-    dependsOn: BuildDev
-    jobs:
-    - job: UnitTest
-      pool:
-        vmImage: 'windows-latest'
-      steps:
-      - script: echo running UnitTest
-
   - stage: Foundation
     dependsOn: UnitTestDev
     ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
@@ -147,6 +137,6 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'ACR'
-          repository: 'pocraspacr'
+          repository: 'rasp'
           command: 'buildAndPush'
           Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'

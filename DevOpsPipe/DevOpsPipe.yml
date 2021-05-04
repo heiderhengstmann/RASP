@@ -62,7 +62,7 @@ stages:
         condition: succeededOrFailed()
 
   - stage: Foundation
-    dependsOn: UnitTestDev
+    #dependsOn: UnitTestDev
     ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
       condition: and(succeeded(), true)
     ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  

@@ -38,7 +38,7 @@ resource "azurerm_log_analytics_workspace" "test" {
 resource "azurerm_log_analytics_solution" "test" {
     solution_name         = "ContainerInsights"
     location              = azurerm_log_analytics_workspace.test.location
-    resource_group_name   = azurerm_resource_group.k8s.name
+    resource_group_name   = azurerm_resource_group.dev.name
     workspace_resource_id = azurerm_log_analytics_workspace.test.id
     workspace_name        = azurerm_log_analytics_workspace.test.name
 
@@ -50,8 +50,8 @@ resource "azurerm_log_analytics_solution" "test" {
 
 resource "azurerm_kubernetes_cluster" "k8s" {
     name                = var.cluster_name
-    location            = azurerm_resource_group.k8s.location
-    resource_group_name = azurerm_resource_group.k8s.name
+    location            = azurerm_resource_group.dev.location
+    resource_group_name = azurerm_resource_group.dev.name
     dns_prefix          = var.dns_prefix
 
     linux_profile {

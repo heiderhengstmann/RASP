@@ -37,8 +37,7 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 80
-      imagePullSecrets:
-        - name: k8s-secret
+
 ---
 apiVersion: v1
 kind: Service

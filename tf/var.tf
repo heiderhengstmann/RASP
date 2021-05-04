@@ -14,7 +14,7 @@ variable "ssh_public_key" {
 }
 
 variable "dns_prefix" {
-    default = "k8stest"
+    default = "pocrasp"
 }
 
 variable cluster_name {
@@ -22,7 +22,7 @@ variable cluster_name {
 }
 
 variable resource_group_name {
-    default = "azure-k8stest"
+    default = "pocrasp-rg"
 }
 
 variable location {
@@ -41,4 +41,9 @@ variable log_analytics_workspace_location {
 # refer https://azure.microsoft.com/pricing/details/monitor/ for log analytics pricing 
 variable log_analytics_workspace_sku {
     default = "PerGB2018"
+}
+
+variable "prefix" {
+  description = "A prefix used for all resources in this example"
+  default = "pocrasp-"
 }

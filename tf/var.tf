@@ -1,5 +1,9 @@
-variable "client_id" {}
-variable "client_secret" {}
+variable "client_id" {
+    default = "f83cd753-b8ab-41e7-a997-130247259fcf"
+}
+variable "client_secret" {
+    default = "CFxN.2ucE~AkIQkm5_IFaXYwQWDetLRrT5"
+}
 
 variable "agent_count" {
     default = 3

@@ -141,7 +141,7 @@ stages:
           containerRegistry: 'pocraspacr'
           repository: 'rasp'
           command: 'buildAndPush'
-          Dockerfile: 'Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
+          Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest

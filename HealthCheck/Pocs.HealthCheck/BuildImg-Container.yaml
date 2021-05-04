@@ -37,15 +37,8 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 80
-        volumeMounts:
-          - name: pv
-            mountPath: /app 
       imagePullSecrets:
         - name: k8s-secret
-      volumes:
-        - name: pv
-          persistentVolumeClaim:
-            claimName: pvc
 ---
 apiVersion: v1
 kind: Service

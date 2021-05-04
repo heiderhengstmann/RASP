@@ -27,7 +27,7 @@ spec:
         - containerPort: 80
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: dev
+          value: Development
         resources:
           requests:
             memory: "10Mi"

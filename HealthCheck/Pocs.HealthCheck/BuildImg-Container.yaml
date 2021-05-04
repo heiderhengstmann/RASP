@@ -22,7 +22,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: healthcheck
-        image: pocraspacr.azurecr.io/rasp/rasp:{{TAG_VERSION}}
+        image: pocraspacr.azurecr.io/rasp
         ports:
         - containerPort: 80
         env:

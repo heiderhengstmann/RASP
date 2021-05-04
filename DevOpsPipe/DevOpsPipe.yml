@@ -155,8 +155,8 @@ stages:
       ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
         condition: false
       variables: 
-        - name: ResourceGroupName
-          value: 'pocrasp-dev'
+        - name: ENVIRONMENT
+          value: 'dev'
         - name: 'azureSubscription'
           value: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
 

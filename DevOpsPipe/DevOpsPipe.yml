@@ -141,3 +141,52 @@ stages:
           repository: 'rasp'
           command: 'buildAndPush'
           Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'
+
+  - stage: DeployAKS
+    dependsOn: BuildImage
+    jobs:
+    - deployment: release_dev
+      ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
+        condition: and(succeeded(), true)
+      ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  
+        condition: false
+      ${{ if contains(variables['Build.SourceBranch'], 'prod') }}:  
+        condition: false
+      ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
+        condition: false
+      variables: 
+        - name: ResourceGroupName
+          value: 'pocrasp-dev'
+        - name: 'azureSubscription'
+          value: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+
+      pool:
+        vmImage: ubuntu-16.04
+      environment: dev
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - script: echo running UnitTest
+            - task: replacetokens@3
+              inputs:
+                rootDirectory: 'HealthCheck/Pocs.HealthCheck'
+                targetFiles: 'BuildImg-Container.yaml'''
+                encoding: 'auto'
+                writeBOM: true
+                actionOnMissing: 'warn'
+                keepToken: false
+                tokenPrefix: '{{'
+                tokenSuffix: '}}'
+                useLegacyPattern: false
+                enableTransforms: false
+                enableTelemetry: true
+            - task: KubernetesManifest@0
+              inputs:
+                action: 'deploy'
+                kubernetesServiceConnection: 'AKSRASP'
+                namespace: 'pocrasp'
+                strategy: 'canary'
+                percentage: '30'
+                manifests: 'HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'

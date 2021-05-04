@@ -37,21 +37,3 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-healthcheck
-  namespace: raspapp
-  labels:
-    app: healthcheck
-    produto: process
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: healthcheck

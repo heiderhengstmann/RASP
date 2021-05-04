@@ -35,20 +35,20 @@ stages:
         inputs:
           SourceFolder: 'HealthCheck/'
           Contents: 'Pocs.HealthCheck/*.yaml'
-          TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
+          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
           CleanTargetFolder: true
           OverWrite: true
       - task: CopyFiles@2
         inputs:
           SourceFolder: 'HealthCheck/'
           Contents: 'Pocs.HealthCheck/Dockerfile'
-          TargetFolder: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck'
+          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
           OverWrite: true
-      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
+      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(Agent.BuildDirectory)/s/Pocs.HealthCheck/bin/Release/netcoreapp3.1'
+          rootFolderOrFile: '$(Agent.BuildDirectory)/'
           includeRootFolder: true
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -159,7 +159,7 @@ stages:
         condition: false
       variables: 
         - name: ENVIRONMENT
-          value: 'dev'
+          value: 'Development'
         - name: 'azureSubscription'
           value: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
 
@@ -172,6 +172,12 @@ stages:
             steps:
             - checkout: self
             - script: echo running UnitTest
+            - task: ExtractFiles@1
+              inputs:
+                archiveFilePatterns: '**/*.zip'
+                destinationFolder: 'AppToPublish'
+                cleanDestinationFolder: false
+                overwriteExistingFiles: true
             - task: replacetokens@3
               inputs:
                 rootDirectory: 'HealthCheck/Pocs.HealthCheck'

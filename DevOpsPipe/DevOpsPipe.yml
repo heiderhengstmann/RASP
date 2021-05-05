@@ -143,6 +143,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'Pocs.HealthCheck/s/HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
+                configuration: 'HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

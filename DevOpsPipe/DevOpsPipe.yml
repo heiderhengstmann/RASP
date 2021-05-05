@@ -123,19 +123,6 @@ stages:
                 downloadType: 'single'
                 artifactName: 'Pocs.HealthCheck'
                 downloadPath: '$(System.ArtifactsDirectory)'
-            - task: replacetokens@3
-              inputs:
-                rootDirectory: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/'
-                targetFiles: '*.yaml'
-                encoding: 'auto'
-                writeBOM: true
-                actionOnMissing: 'warn'
-                keepToken: false
-                tokenPrefix: '{{'
-                tokenSuffix: '}}'
-                useLegacyPattern: false
-                enableTransforms: false
-                enableTelemetry: true
             - task: Kubernetes@1
               inputs:
                 connectionType: 'Kubernetes Service Connection'

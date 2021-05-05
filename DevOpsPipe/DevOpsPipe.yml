@@ -147,7 +147,7 @@ stages:
           containerRegistry: 'pocraspacr'
           repository: 'rasp'
           command: 'buildAndPush'
-          Dockerfile: 'Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
+          Dockerfile: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
@@ -181,7 +181,7 @@ stages:
             - script: echo running UnitTest
             - task: replacetokens@3
               inputs:
-                rootDirectory: 'Pocs.HealthCheck/'
+                rootDirectory: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
                 targetFiles: '*.yaml'
                 encoding: 'auto'
                 writeBOM: true
@@ -199,6 +199,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
+                configuration: '$(Agent.BuildDirectory)/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

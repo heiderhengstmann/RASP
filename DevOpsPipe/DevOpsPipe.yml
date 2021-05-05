@@ -137,6 +137,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
+                configuration: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

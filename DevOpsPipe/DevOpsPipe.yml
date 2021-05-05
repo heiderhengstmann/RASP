@@ -46,7 +46,7 @@ stages:
           OverWrite: true
       - task: CopyFiles@2
         inputs:
-          SourceFolder: 'HealthCheck/Pocs.HealthCheck/bin/Release/netcoreapp3.1/publish'
+          SourceFolder: 'HealthCheck/Pocs.HealthCheck/'
           Contents: '*'
           TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Publish'
           OverWrite: true

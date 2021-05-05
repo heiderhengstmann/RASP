@@ -119,7 +119,7 @@ stages:
                 provider: 'azurerm'
                 command: 'apply'
                 workingDirectory: 'tf'
-                commandOptions: 'dev -lock=false'
+                commandOptions: 'dev lock=false'
                 environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
 
   - stage: BuildImage
@@ -140,7 +140,7 @@ stages:
           containerRegistry: 'pocraspacr'
           repository: 'rasp'
           command: 'buildAndPush'
-          Dockerfile: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
+          Dockerfile: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
@@ -192,6 +192,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
+                configuration: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

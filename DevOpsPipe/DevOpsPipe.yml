@@ -44,6 +44,12 @@ stages:
           Contents: 'Pocs.HealthCheck/Dockerfile'
           TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
           OverWrite: true
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 's\HealthCheck\Pocs.HealthCheck\bin\Release\netcoreapp3.1\publish'
+          Contents: '*'
+          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Publish'
+          OverWrite: true
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
       - task: ArchiveFiles@2
@@ -57,7 +63,7 @@ stages:
         displayName: 'Publish Artifact'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          ArtifactName: '$(Parameters.ArtifactName)'
+          ArtifactName: 'Pocs.HealthCheck'
           publishLocation: 'Container'
         condition: succeededOrFailed()
 
@@ -132,12 +138,6 @@ stages:
         vmImage: ubuntu-16.04
       steps:
       - checkout: self
-      - task: ExtractFiles@1
-        inputs:
-          archiveFilePatterns: '**/*.zip'
-          destinationFolder: 'AppToPublish'
-          cleanDestinationFolder: false
-          overwriteExistingFiles: true
       - task: Docker@2
         inputs:
           containerRegistry: 'pocraspacr'
@@ -147,7 +147,7 @@ stages:
           containerRegistry: 'pocraspacr'
           repository: 'rasp'
           command: 'buildAndPush'
-          Dockerfile: 'HealthCheck/Pocs.HealthCheck/Dockerfile'
+          Dockerfile: 'Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
@@ -179,16 +179,10 @@ stages:
             steps:
             - checkout: self
             - script: echo running UnitTest
-            - task: ExtractFiles@1
-              inputs:
-                archiveFilePatterns: '**/*.zip'
-                destinationFolder: 'AppToPublish'
-                cleanDestinationFolder: false
-                overwriteExistingFiles: true
             - task: replacetokens@3
               inputs:
-                rootDirectory: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
-                targetFiles: 'BuildImg-Container.yaml'
+                rootDirectory: 'Pocs.HealthCheck/'
+                targetFiles: '*.yaml'
                 encoding: 'auto'
                 writeBOM: true
                 actionOnMissing: 'warn'

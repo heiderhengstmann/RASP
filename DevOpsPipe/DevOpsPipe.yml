@@ -110,7 +110,7 @@ stages:
                 provider: 'azurerm'
                 command: 'plan'
                 workingDirectory: 'tf'
-                commandOptions: '-out dev'
+                commandOptions: '-out dev -lock=false'
                 environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
 
             - task: TerraformTaskV1@0

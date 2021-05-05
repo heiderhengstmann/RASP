@@ -31,7 +31,7 @@ stages:
           command: 'publish'
           publishWebProjects: false
           projects: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
-          arguments: '/p:Configuration=Release --output=$(Agent.BuildDirectory)'
+          arguments: '/p:Configuration=Release --output=$(Agent.BuildDirectory)/publish'
           zipAfterPublish: false
           modifyOutputPath: false
       - task: CopyFiles@2
@@ -53,7 +53,7 @@ stages:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
         inputs:
-          PathtoPublish: '$(Agent.BuildDirectory)'
+          PathtoPublish: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
           ArtifactName: 'Pocs.HealthCheck'
           publishLocation: 'Container'
         condition: succeededOrFailed()

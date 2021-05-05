@@ -5,5 +5,5 @@ RUN sed -i '/^ssl_conf = ssl_sect$/s/^/#/' /etc/ssl/openssl.cnf
 WORKDIR /app
 EXPOSE 80
 
-COPY "$(System.ArtifactsDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Publish/" "/app"
+COPY "/home/vsts/work/1/a/Pocs.HealthCheck/Pocs.HealthCheck/Publish/" "/app"
 ENTRYPOINT ["dotnet", "Pocs.HealthCheck.dll", "--urls", "http://*:80"]

@@ -117,6 +117,12 @@ stages:
             steps:
             - checkout: self
             - script: echo running UnitTest
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'Pocs.HealthCheck'
+                downloadPath: '$(System.ArtifactsDirectory)'
             - task: replacetokens@3
               inputs:
                 rootDirectory: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/'
@@ -137,6 +143,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'DevOpsPipe/BuildImg-Container.yaml'
+                configuration: 'Pocs.HealthCheck/s/HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

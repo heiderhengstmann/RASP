@@ -47,12 +47,7 @@ stages:
           Contents: 'Pocs.HealthCheck/Dockerfile'
           TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
           OverWrite: true
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'HealthCheck/Pocs.HealthCheck/bin/Release/netcoreapp3.1/' 
-          Contents: '*'
-          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Publish'
-          OverWrite: true
+
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
       - task: PublishBuildArtifacts@1

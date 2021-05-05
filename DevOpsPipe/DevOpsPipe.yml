@@ -48,9 +48,9 @@ stages:
         inputs:
           SourceFolder: 'HealthCheck/Pocs.HealthCheck/bin/Release/netcoreapp3.1/' 
           Contents: '*'
-          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Publish'
+          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Publish'
           OverWrite: true
-      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
+      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'

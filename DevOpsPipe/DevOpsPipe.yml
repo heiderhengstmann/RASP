@@ -29,8 +29,11 @@ stages:
         displayName: 'dotnet build'
         inputs:
           command: 'publish'
-          publishWebProjects: true
+          publishWebProjects: false
+          projects: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
           arguments: '/p:Configuration=Release'
+          zipAfterPublish: false
+          modifyOutputPath: false
       - task: CopyFiles@2
         inputs:
           SourceFolder: 'HealthCheck/'

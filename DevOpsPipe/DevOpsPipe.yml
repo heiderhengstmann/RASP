@@ -46,23 +46,16 @@ stages:
           OverWrite: true
       - task: CopyFiles@2
         inputs:
-          SourceFolder: 'HealthCheck/Pocs.HealthCheck/'
+          SourceFolder: 'HealthCheck/Pocs.HealthCheck/bin/Release/netcoreapp3.1/' 
           Contents: '*'
           TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Publish'
           OverWrite: true
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
-      - task: ArchiveFiles@2
-        inputs:
-          rootFolderOrFile: '$(Agent.BuildDirectory)/'
-          includeRootFolder: true
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          replaceExistingArchive: true
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          PathtoPublish: '$(Agent.BuildDirectory)/$(Build.BuildId).zip'
           ArtifactName: 'Pocs.HealthCheck'
           publishLocation: 'Container'
         condition: succeededOrFailed()
@@ -199,6 +192,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: '$(Agent.BuildDirectory)/Pocs.HealthCheck/BuildImg-Container.yaml'
+                configuration: '$(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

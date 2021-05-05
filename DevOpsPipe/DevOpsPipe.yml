@@ -69,13 +69,10 @@ stages:
       pool:
         vmImage: ubuntu-16.04
       steps:
-      - checkout: self
+      #- checkout: self
       - task: DownloadBuildArtifacts@0
         inputs:
-          buildType: 'specific'
-          project: 'bd3fdfda-0450-49b7-a135-712682037fd7'
-          pipeline: '5'
-          buildVersionToDownload: 'latest'
+          buildType: 'current'
           downloadType: 'single'
           artifactName: 'Pocs.HealthCheck'
           downloadPath: '$(System.ArtifactsDirectory)'

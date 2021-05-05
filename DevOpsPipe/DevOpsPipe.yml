@@ -119,7 +119,7 @@ stages:
             - script: echo running UnitTest
             - task: replacetokens@3
               inputs:
-                rootDirectory: '$(System.ArtifactsDirectory)/Pocs.HealthCheck'
+                rootDirectory: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/'
                 targetFiles: '*.yaml'
                 encoding: 'auto'
                 writeBOM: true

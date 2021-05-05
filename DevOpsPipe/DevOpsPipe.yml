@@ -31,7 +31,7 @@ stages:
           command: 'publish'
           publishWebProjects: false
           projects: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
-          arguments: '/p:Configuration=Release'
+          arguments: '/p:Configuration=Release --output=$(Agent.BuildDirectory)'
           zipAfterPublish: false
           modifyOutputPath: false
       - task: CopyFiles@2

@@ -75,7 +75,6 @@ stages:
           buildType: 'specific'
           project: 'bd3fdfda-0450-49b7-a135-712682037fd7'
           pipeline: '5'
-          specificBuildWithTriggering: true
           buildVersionToDownload: 'latest'
           downloadType: 'single'
           artifactName: 'Pocs.HealthCheck'

@@ -39,7 +39,7 @@ stages:
           SourceFolder: 'HealthCheck/'
           Contents: 'Pocs.HealthCheck/*.yaml'
           TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
-          CleanTargetFolder: true
+          #CleanTargetFolder: true
           OverWrite: true
       - task: CopyFiles@2
         inputs:

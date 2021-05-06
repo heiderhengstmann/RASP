@@ -38,17 +38,17 @@ stages:
         inputs:
           SourceFolder: 'HealthCheck/'
           Contents: 'Pocs.HealthCheck/*.yaml'
-          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
+          TargetFolder: '$(Agent.BuildDirectory)/'
           #CleanTargetFolder: true
           OverWrite: true
       - task: CopyFiles@2
         inputs:
           SourceFolder: 'HealthCheck/'
           Contents: 'Pocs.HealthCheck/Dockerfile'
-          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
+          TargetFolder: '$(Agent.BuildDirectory)/'
           OverWrite: true
 
-      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/**.yaml'
+      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
@@ -83,7 +83,7 @@ stages:
           containerRegistry: 'pocraspacr'
           repository: 'rasp'
           command: 'buildAndPush'
-          Dockerfile: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/Dockerfile'
+          Dockerfile: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
@@ -128,6 +128,6 @@ stages:
                 namespace: 'pocrasp'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/Pocs.HealthCheck/BuildImg-Container.yaml'
+                configuration: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'

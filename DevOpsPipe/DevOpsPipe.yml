@@ -47,6 +47,12 @@ stages:
           Contents: 'Pocs.HealthCheck/Dockerfile'
           TargetFolder: '$(Agent.BuildDirectory)/'
           OverWrite: true
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'HealthCheck/Pocs.HealthCheck/hdiv/'
+          Contents: '**'
+          TargetFolder: '$(Agent.BuildDirectory)/'
+          OverWrite: true
 
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'

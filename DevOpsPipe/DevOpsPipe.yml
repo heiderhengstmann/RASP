@@ -51,7 +51,7 @@ stages:
         inputs:
           SourceFolder: 'HealthCheck/Pocs.HealthCheck/hdiv/'
           Contents: '**'
-          TargetFolder: '$(Agent.BuildDirectory)/'
+          TargetFolder: '$(Agent.BuildDirectory)/hdiv'
           OverWrite: true
 
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'

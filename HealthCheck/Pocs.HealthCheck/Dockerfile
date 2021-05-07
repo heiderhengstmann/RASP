@@ -6,8 +6,8 @@ WORKDIR /app
 EXPOSE 80
 
 # copy Hdiv agent
-COPY /hdiv/agent /opt/hdiv/agent
-COPY /hdiv/env.properties /opt/hdiv/agent/
+COPY "/hdiv/agent" "/opt/hdiv/agent"
+COPY "/hdiv/env.properties" "/opt/hdiv/agent/"
 
 COPY "/" "/app"
 ENTRYPOINT ["dotnet", "Pocs.HealthCheck.dll", "--urls", "http://*:80"]

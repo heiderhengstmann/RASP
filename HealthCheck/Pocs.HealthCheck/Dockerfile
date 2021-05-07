@@ -6,7 +6,7 @@ WORKDIR /app
 EXPOSE 80
 
 # copy Hdiv agent
-COPY "/hdiv/agent" "/opt/hdiv/agent"
+COPY "/hdiv/agent.env" "/opt/hdiv/agent"
 COPY "/hdiv/env.properties" "/opt/hdiv/agent/"
 
 COPY "/" "/app"

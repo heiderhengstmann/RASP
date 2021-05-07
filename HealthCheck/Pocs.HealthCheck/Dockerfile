@@ -9,7 +9,7 @@ EXPOSE 80
 COPY "/" "/app"
 
 # copy Hdiv agent
-mkdir /opt/hdiv/agent
+RUN mkdir -p /opt/hdiv/agent
 COPY "hdiv/agent.env" "/opt/hdiv/agent"
 COPY "hdiv/env.properties" "/opt/hdiv/agent/"
 

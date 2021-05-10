@@ -98,34 +98,26 @@ data "azurerm_public_ip" "ip" {
 
 
 # Create a Linux virtual machine DEV
-resource "azurerm_virtual_machine" "vm" {
-  name                  = "myTFVM"
-  location            = azurerm_resource_group.dev.location
-  resource_group_name = azurerm_resource_group.dev.name
-  network_interface_ids = [azurerm_network_interface.nic.id]
-  vm_size               = "Standard_DS1_v2"
+resource "azurerm_windows_virtual_machine" "main" {
+  name                            = "${var.prefix}-vm"
+  resource_group_name             = azurerm_resource_group.dev.name
+  location                        = azurerm_resource_group.dev.location
+  size                            = "Standard_F2"
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+  network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
 
-  storage_os_disk {
-    name              = "myOsDisk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Premium_LRS"
-  }
-
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04.0-LTS"
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Datacenter"
     version   = "latest"
   }
 
-  os_profile {
-    computer_name  = "myTFVM"
-    admin_username = var.admin_username
-    admin_password = var.admin_password
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
+  os_disk {
+    storage_account_type = "Standard_LRS"
+    caching              = "ReadWrite"
   }
 }

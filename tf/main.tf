@@ -79,7 +79,7 @@ resource "azurerm_public_ip" "publicip" {
 # Create network interface 1
 resource "azurerm_network_interface" "nic" {
   name                      = "myNIC"
-  location                  = "westus2"
+  location                  = azurerm_resource_group.dev.location
   resource_group_name       = azurerm_resource_group.dev.name
 
   ip_configuration {

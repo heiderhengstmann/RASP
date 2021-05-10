@@ -139,7 +139,7 @@ stages:
                 containerRegistryType: 'Azure Container Registry'
 
   - stage: Foundation
-   dependsOn: []
+   #dependsOn: []
    ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
      condition: and(succeeded(), true)
    ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  

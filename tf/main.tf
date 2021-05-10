@@ -99,7 +99,7 @@ data "azurerm_public_ip" "ip" {
 
 # Create a Linux virtual machine DEV
 resource "azurerm_windows_virtual_machine" "main" {
-  name                            = "${var.prefix}-vm"
+  name                            = "${var.prefix}-vmWin"
   resource_group_name             = azurerm_resource_group.dev.name
   location                        = azurerm_resource_group.dev.location
   size                            = "Standard_F2"

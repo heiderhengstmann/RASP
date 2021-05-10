@@ -18,6 +18,65 @@ variables:
 
 stages:
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
+
+  - stage: Foundation
+    #dependsOn: []
+    ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
+      condition: and(succeeded(), true)
+    ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  
+      condition: false
+    ${{ if contains(variables['Build.SourceBranch'], 'prod') }}:  
+      condition: false
+    ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
+      condition: false
+    jobs:
+    - deployment: release_dev
+      variables: 
+        - name: ResourceGroupName
+          value: 'pocrasp-dev'
+        - name: 'azureSubscription'
+          value: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+      pool:
+        vmImage: ubuntu-16.04
+      environment: dev
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - script: echo running UnitTest
+            - task: TerraformInstaller@0
+              displayName: 'TF install'
+              inputs:
+                terraformVersion: '0.12.3'
+            - task: TerraformTaskV1@0
+              displayName: 'TF Initi'
+              inputs:
+                provider: 'azurerm'
+                command: 'init'
+                workingDirectory: 'tf'
+                backendServiceArm: ${{ variables.azureSubscription  }}
+                backendAzureRmResourceGroupName: 'storage'
+                backendAzureRmStorageAccountName: 'ststudyheider'
+                backendAzureRmContainerName: 'terra'
+                backendAzureRmKey: 'pocrasp'
+            - task: TerraformTaskV1@0
+              displayName: 'TF Plan'
+              inputs:
+                provider: 'azurerm'
+                command: 'plan'
+                workingDirectory: 'tf'
+                commandOptions: '-out dev'
+                environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
+            - task: TerraformTaskV1@0
+              displayName: 'TF Apply'
+              inputs:
+                provider: 'azurerm'
+                command: 'apply'
+                workingDirectory: 'tf'
+                commandOptions: 'dev'
+                environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
+
   - stage: BuildDev
     displayName: Build-Dev
     jobs:
@@ -63,7 +122,6 @@ stages:
           ArtifactName: 'Pocs.HealthCheck'
           publishLocation: 'Container'
         condition: succeededOrFailed()
-
 
   - stage: BuildImage
     displayName: Build-img
@@ -137,61 +195,3 @@ stages:
                 configuration: '$(System.ArtifactsDirectory)/Pocs.HealthCheck/BuildImg-Container.yaml'
                 secretType: 'dockerRegistry'
                 containerRegistryType: 'Azure Container Registry'
-
-  - stage: Foundation
-    #dependsOn: []
-    ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
-      condition: and(succeeded(), true)
-    ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  
-      condition: false
-    ${{ if contains(variables['Build.SourceBranch'], 'prod') }}:  
-      condition: false
-    ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
-      condition: false
-    jobs:
-    - deployment: release_dev
-      variables: 
-        - name: ResourceGroupName
-          value: 'pocrasp-dev'
-        - name: 'azureSubscription'
-          value: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
-      pool:
-        vmImage: ubuntu-16.04
-      environment: dev
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - checkout: self
-            - script: echo running UnitTest
-            - task: TerraformInstaller@0
-              displayName: 'TF install'
-              inputs:
-                terraformVersion: '0.12.3'
-            - task: TerraformTaskV1@0
-              displayName: 'TF Initi'
-              inputs:
-                provider: 'azurerm'
-                command: 'init'
-                workingDirectory: 'tf'
-                backendServiceArm: ${{ variables.azureSubscription  }}
-                backendAzureRmResourceGroupName: 'storage'
-                backendAzureRmStorageAccountName: 'ststudyheider'
-                backendAzureRmContainerName: 'terra'
-                backendAzureRmKey: 'pocrasp'
-            - task: TerraformTaskV1@0
-              displayName: 'TF Plan'
-              inputs:
-                provider: 'azurerm'
-                command: 'plan'
-                workingDirectory: 'tf'
-                commandOptions: '-out dev'
-                environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}
-            - task: TerraformTaskV1@0
-              displayName: 'TF Apply'
-              inputs:
-                provider: 'azurerm'
-                command: 'apply'
-                workingDirectory: 'tf'
-                commandOptions: 'dev'
-                environmentServiceNameAzureRM: ${{ variables.azureSubscription  }}

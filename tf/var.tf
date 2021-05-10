@@ -47,3 +47,13 @@ variable "prefix" {
   description = "A prefix used for all resources in this example"
   default = "pocrasp-"
 }
+
+variable "admin_username" {
+  description = "name"
+  default = "hohn"
+}
+
+variable "admin_password" {
+  description = "pass"
+  default = "L34ndr0.hdrblm"
+}

@@ -23,17 +23,6 @@ variables:
 
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - upload: Console/hdiv-console-web/docker/console.yaml
-      artifact: console
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -60,7 +49,7 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/console/deployment.yml
+                $(Pipeline.Workspace)/manifest-console/deployment.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |

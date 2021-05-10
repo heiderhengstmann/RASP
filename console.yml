@@ -23,6 +23,16 @@ variables:
 
 
 stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - upload: Console/hdiv-console-web/docker/console.yaml
+      artifact: manifest-console
 
 - stage: Deploy
   displayName: Deploy stage

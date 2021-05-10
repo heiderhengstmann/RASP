@@ -60,7 +60,7 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifest-console/deployment.yml
+                $(Pipeline.Workspace)/manifest-console/cosole.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |

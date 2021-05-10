@@ -31,7 +31,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - upload: Console\hdiv-console-web\docker\console.yaml
+    - upload: Console/hdiv-console-web/docker/console.yaml
       artifact: console
 
 - stage: Deploy

@@ -147,7 +147,7 @@ stages:
           taskProfile: 'Console'
           HdivConsoleService: 'HDIV-POC-RASP'
           application: 'Rasp-Pipe'
-          startDate: '$(date -u ''+%Y/%m/%d %H:%M:%S'')'
+          startDate: '2021/05/11 15:10:22'
 
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'

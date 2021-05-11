@@ -26,7 +26,6 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
-      - task: DotNetCoreCLI@2
       - script: |
           docker run \
             -e "VDB_HOME=/reports/vdb" \
@@ -44,6 +43,11 @@ stages:
           PathtoPublish: "$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs"
           ArtifactName: "CodeAnalysisLogs"
           publishLocation: "Container"
+      
+      - task: WhiteSource@21
+        inputs:
+          cwd: '$(System.DefaultWorkingDirectory)'
+          projectName: 'WhiteSource'
 
   - stage: Foundation
     #dependsOn: []

@@ -147,7 +147,7 @@ stages:
           taskProfile: 'Console'
           HdivConsoleService: 'HDIV-POC-RASP'
           application: 'Rasp-Pipe'
-          startDate: '##vso[task.setvariable variable=BUILD_DATE;]$(date -u ''+%Y/%m/%d %H:%M:%S'')'
+          startDate: '$(date -u ''+%Y/%m/%d %H:%M:%S'')'
 
       - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
         displayName: 'Command Line Script'

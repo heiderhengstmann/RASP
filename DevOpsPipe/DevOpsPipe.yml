@@ -19,6 +19,30 @@ variables:
 stages:
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
 
+  - stage: AppSec
+    displayName: AppSec
+    jobs:
+    - job: Build
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - script: |
+          docker run \
+            -e "VDB_HOME=/reports/vdb" \
+            -v "$(Build.SourcesDirectory):/app" \
+            -v "$(Build.ArtifactStagingDirectory):/reports" \
+            -u $(id -u):$(id -g) \
+            shiftleft/sast-scan scan --src /app --build \
+            --out_dir /reports/CodeAnalysisLogs --no-error
+        displayName: "Perform Scan"
+        continueOnError: "tru
+      - task: PublishBuildArtifacts@1
+        displayName: "Publish analysis logs"
+        inputs:
+          PathtoPublish: "$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs"
+          ArtifactName: "CodeAnalysisLogs"
+          publishLocation: "Container"
+
   - stage: Foundation
     #dependsOn: []
     ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
@@ -44,24 +68,6 @@ stages:
           deploy:
             steps:
             - checkout: self
-            - script: |
-                docker run \
-                  -e "VDB_HOME=/reports/vdb" \
-                  -v "$(Build.SourcesDirectory):/app" \
-                  -v "$(Build.ArtifactStagingDirectory):/reports" \
-                  -u $(id -u):$(id -g) \
-                  shiftleft/sast-scan scan --src /app --build \
-                  --out_dir /reports/CodeAnalysisLogs --no-error
-              displayName: "Perform Scan"
-              continueOnError: "true"
-                        
-            - task: PublishBuildArtifacts@1
-              displayName: "Publish analysis logs"
-              inputs:
-                PathtoPublish: "$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs"
-                ArtifactName: "CodeAnalysisLogs"
-                publishLocation: "Container"
-
             - task: TerraformInstaller@0
               displayName: 'TF install'
               inputs:

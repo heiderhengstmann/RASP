@@ -26,6 +26,7 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
+      - task: DotNetCoreCLI@2
       - script: |
           docker run \
             -e "VDB_HOME=/reports/vdb" \
@@ -35,7 +36,8 @@ stages:
             shiftleft/sast-scan scan --src /app --build \
             --out_dir /reports/CodeAnalysisLogs --no-error
         displayName: "Perform Scan"
-        continueOnError: "tru
+        continueOnError: "true"
+
       - task: PublishBuildArtifacts@1
         displayName: "Publish analysis logs"
         inputs:

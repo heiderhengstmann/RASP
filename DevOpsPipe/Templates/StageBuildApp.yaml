@@ -1,0 +1,11 @@
+stages:
+- stage: BuildDev
+  displayName: Build-Dev
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: StepBuildNetCore.yaml
+    #- template: StepHDIVSecurity.yaml
+    - template: StepPublishArtifactory.yaml

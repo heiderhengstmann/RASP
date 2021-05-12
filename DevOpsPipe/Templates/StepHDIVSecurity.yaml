@@ -1,0 +1,7 @@
+steps:
+- task: HdivCheckTask@0
+  inputs:
+    taskProfile: 'Console'
+    HdivConsoleService: 'HDIV-RASP'
+    application: 'Rasp-Pipe'
+    startDate: '2021/05/11 15:10:22'

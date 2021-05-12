@@ -23,58 +23,7 @@ stages:
 
   - template: Templates\StageFoundation.yaml
 
-  - stage: BuildDev
-    displayName: Build-Dev
-    jobs:
-    - job: Build
-      pool:
-        vmImage: 'windows-latest'
-      steps:
-      - task: DotNetCoreCLI@2
-        displayName: 'dotnet build'
-        inputs:
-          command: 'publish'
-          publishWebProjects: false
-          projects: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
-          arguments: '/p:Configuration=Release --output=$(Agent.BuildDirectory)/Pocs.HealthCheck'
-          zipAfterPublish: false
-          modifyOutputPath: false
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'HealthCheck/'
-          Contents: 'Pocs.HealthCheck/*.yaml'
-          TargetFolder: '$(Agent.BuildDirectory)/'
-          #CleanTargetFolder: true
-          OverWrite: true
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'HealthCheck/'
-          Contents: 'Pocs.HealthCheck/Dockerfile'
-          TargetFolder: '$(Agent.BuildDirectory)/'
-          OverWrite: true
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'HealthCheck/Pocs.HealthCheck/hdiv/'
-          Contents: '**'
-          TargetFolder: '$(Agent.BuildDirectory)/Pocs.HealthCheck/hdiv'
-          OverWrite: true
-
-      - task: HdivCheckTask@0
-        inputs:
-          taskProfile: 'Console'
-          HdivConsoleService: 'HDIV-RASP'
-          application: 'Rasp-Pipe'
-          startDate: '2021/05/11 15:10:22'
-
-      - script: 'sed -i ''s/{{TAG_VERSION}}/$(Build.BuildId)/g'' $(Agent.BuildDirectory)/Pocs.HealthCheck/**.yaml'
-        displayName: 'Command Line Script'
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact'
-        inputs:
-          PathtoPublish: '$(Agent.BuildDirectory)/Pocs.HealthCheck'
-          ArtifactName: 'Pocs.HealthCheck'
-          publishLocation: 'Container'
-        condition: succeededOrFailed()
+  - template: Templates\StageBuildApp.yaml
 
   - stage: BuildImage
     displayName: Build-img

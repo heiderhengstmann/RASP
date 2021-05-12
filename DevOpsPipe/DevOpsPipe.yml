@@ -1,7 +1,8 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+parameters: 
+  - name: projectsolution
+    default: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
+  - name: argumentsbuild
+    default: '/p:Configuration=Release --output=$(Agent.BuildDirectory)/Pocs.HealthCheck'
 
 trigger:
   branches:
@@ -9,7 +10,6 @@ trigger:
     - dev
     - qa
     - prod
-
 
 
 stages:

@@ -10,7 +10,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: ${{ parameters.azureSubscription }} 
+    projects: ${{ parameters.projectsolution }} 
     arguments: ${{ parameters.argumentsbuild }}
     zipAfterPublish: false
     modifyOutputPath: false

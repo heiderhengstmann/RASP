@@ -13,9 +13,7 @@ trigger:
 
 
 stages:
-parameters: 
-  projectsolution: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
-  argumentsbuild: '/p:Configuration=Release --output=$(Agent.BuildDirectory)/Pocs.HealthCheck'
+
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
 
   - template: Templates\StageAppSec.yaml
@@ -23,6 +21,9 @@ parameters:
   - template: Templates\StageFoundation.yaml
 
   - template: Templates\StageBuildApp.yaml
+    parameters: 
+      projectsolution: ${{ parameters.projectsolution }}  
+      argumentsbuild: ${{ parameters.argumentsbuild }}
 
   - stage: BuildImage
     displayName: Build-img

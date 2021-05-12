@@ -10,13 +10,13 @@ stages:
   ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
     condition: false
   jobs:
-  - template: JobFoundationAKS-tf.yaml
-    parameters: 
-      ResourceGroupName: 'pocrasp-dev'
-      azureSubscription: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
-      backendAzureRmResourceGroupName: 'storage'
-      backendAzureRmStorageAccountName: 'ststudyheider'
-      backendAzureRmContainerName: 'terra'
-      backendAzureRmKey: 'pocrasp'
-      commandOptionsPlan: '-out dev'  
-      commandOptionsApply: 'dev' 
+    - template: JobFoundationAKS-tf.yaml
+      parameters: 
+        ResourceGroupName: 'pocrasp-dev'
+        azureSubscription: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+        backendAzureRmResourceGroupName: 'storage'
+        backendAzureRmStorageAccountName: 'ststudyheider'
+        backendAzureRmContainerName: 'terra'
+        backendAzureRmKey: 'pocrasp'
+        commandOptionsPlan: '-out dev'  
+        commandOptionsApply: 'dev' 

@@ -1,0 +1,58 @@
+parameters: 
+  - name: ResourceGroupName
+    default: 'pocrasp-dev'
+  - name: 'azureSubscription'
+    default: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+  - name: backendAzureRmResourceGroupName
+    default: 'storage'
+  - name: backendAzureRmStorageAccountName
+    default: 'ststudyheider'
+  - name: backendAzureRmContainerName
+    default: 'terra'
+  - name: backendAzureRmKey
+    default: 'pocrasp'
+  - name: commandOptionsPlan
+    default: '-out dev'  
+  - name: commandOptionsApply
+    default: 'dev' 
+
+- deployment: release_dev
+  pool:
+    vmImage: ubuntu-16.04
+  environment: dev
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: self
+        - task: TerraformInstaller@0
+          displayName: 'TF install'
+          inputs:
+            terraformVersion: '0.12.3'
+        - task: TerraformTaskV1@0
+          displayName: 'TF Initi'
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: 'tf'
+            backendServiceArm: ${{ parameters.azureSubscription }}
+            backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+            backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmResourceGroupName }}
+            backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+            backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
+        - task: TerraformTaskV1@0
+          displayName: 'TF Plan'
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: 'tf'
+            commandOptions: ${{ parameters.commandOptionsPlan }}
+            environmentServiceNameAzureRM: ${{ parameters.azureSubscription }}
+        - task: TerraformTaskV1@0
+          displayName: 'TF Apply'
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: 'tf'
+            commandOptions: ${{ parameters.commandOptionsApply }}
+            environmentServiceNameAzureRM: ${{ parameters.azureSubscription }}

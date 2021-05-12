@@ -1,0 +1,21 @@
+- stage: Foundation
+  #dependsOn: []
+  ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:
+    condition: and(succeeded(), true)
+  ${{ if contains(variables['Build.SourceBranch'], 'hotfix') }}:  
+    condition: false
+  ${{ if contains(variables['Build.SourceBranch'], 'prod') }}:  
+    condition: false
+  ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
+    condition: false
+  jobs:
+  - template: Templates\Stages\Jobs\JobFoundationAKS-tf.yaml
+    parameters: 
+      ResourceGroupName: 'pocrasp-dev'
+      azureSubscription: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'
+      backendAzureRmResourceGroupName: 'storage'
+      backendAzureRmStorageAccountName: 'ststudyheider'
+      backendAzureRmContainerName: 'terra'
+      backendAzureRmKey: 'pocrasp'
+      commandOptionsPlan: '-out dev'  
+      commandOptionsApply: 'dev' 

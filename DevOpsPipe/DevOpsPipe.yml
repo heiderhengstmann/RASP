@@ -15,11 +15,14 @@ trigger:
 stages:
 
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
+parameters: 
+  - name: projectsolution
+    default: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
+  - name: argumentsbuild
+    default: '/p:Configuration=Release --output=$(Agent.BuildDirectory)/Pocs.HealthCheck'
 
   - template: Templates\StageAppSec.yaml
-
   - template: Templates\StageFoundation.yaml
-
   - template: Templates\StageBuildApp.yaml
     parameters: 
       projectsolution: ${{ parameters.projectsolution }}  

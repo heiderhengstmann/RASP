@@ -9,7 +9,7 @@
   ${{ if contains(variables['Build.SourceBranch'], 'qa') }}:  
     condition: false
   jobs:
-  - template: Templates\Stages\Jobs\JobFoundationAKS-tf.yaml
+  - template: Templates\JobFoundationAKS-tf.yaml
     parameters: 
       ResourceGroupName: 'pocrasp-dev'
       azureSubscription: 'Assinatura do Visual Studio Enterprise – MPN(a45048d3-69a8-4e2d-89a9-4585441c96f6)'

@@ -6,4 +6,4 @@ stages:
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
-    - template: Templates\StepBuildAppSec.yaml
+    - template: \StepBuildAppSec.yaml

@@ -19,9 +19,9 @@ variables:
 stages:
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
 
-  - template: Templates\Stages\StageAppSec.yaml
+  #- template: Templates\Stages\StageAppSec.yaml
 
-  #- template: Templates\Stages\StageFoundation.yaml
+  - template: Templates\Stages\StageFoundation.yaml
 
   - stage: BuildDev
     displayName: Build-Dev

@@ -38,7 +38,7 @@ jobs:
             workingDirectory: 'tf'
             backendServiceArm: ${{ parameters.azureSubscription }}
             backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
-            backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmResourceGroupName }}
+            backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
             backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
             backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
         - task: TerraformTaskV1@0

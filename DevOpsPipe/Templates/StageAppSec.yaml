@@ -1,3 +1,4 @@
+stages:
 - stage: AppSec
   displayName: AppSec
   jobs:

@@ -26,7 +26,7 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
-      - templates: Templates\AppSec.yaml
+      - template: Templates\AppSec.yaml
 
   - stage: Foundation
     #dependsOn: []

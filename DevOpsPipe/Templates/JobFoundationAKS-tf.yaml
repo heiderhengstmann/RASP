@@ -1,4 +1,3 @@
-jobs:
 parameters: 
   - name: ResourceGroupName
     default: 'pocrasp-dev'
@@ -17,6 +16,7 @@ parameters:
   - name: commandOptionsApply
     default: 'dev' 
 
+jobs:
 - deployment: release_dev
   pool:
     vmImage: ubuntu-16.04

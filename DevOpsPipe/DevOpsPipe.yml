@@ -10,11 +10,12 @@ trigger:
     - qa
     - prod
 
+
+
+stages:
 parameters: 
   projectsolution: 'HealthCheck/Pocs.HealthCheck/Pocs.HealthCheck.csproj'
   argumentsbuild: '/p:Configuration=Release --output=$(Agent.BuildDirectory)/Pocs.HealthCheck'
-
-stages:
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
 
   - template: Templates\StageAppSec.yaml

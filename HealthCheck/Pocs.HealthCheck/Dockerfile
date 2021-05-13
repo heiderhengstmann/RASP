@@ -12,5 +12,7 @@ COPY "/" "/app"
 RUN mkdir -p /opt/hdiv/agent
 COPY "hdiv/agent.env" "/opt/hdiv/agent"
 COPY "hdiv/env.properties" "/opt/hdiv/agent/"
+RUN chmod -R 755 "/opt/hdiv"
+RUN chmod -R 755 "/app/hdiv"
 
 ENTRYPOINT ["dotnet", "Pocs.HealthCheck.dll", "--urls", "http://*:80"]

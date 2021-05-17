@@ -1,0 +1,13 @@
+steps:
+- task: replacetokens@3
+  inputs:
+    targetFiles: '**/*.yaml'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '__'
+    tokenSuffix: '__'
+    useLegacyPattern: false
+    enableTransforms: false
+    enableTelemetry: true

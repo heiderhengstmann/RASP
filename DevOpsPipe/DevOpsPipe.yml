@@ -16,8 +16,8 @@ stages:
 
 - ${{ if contains(variables['Build.SourceBranch'], 'dev') }}:  
 
-  - template: Templates\StageAppSec.yaml
-  - template: Templates\StageFoundation.yaml
+  #- template: Templates\StageAppSec.yaml
+  #- template: Templates\StageFoundation.yaml
   - template: Templates\StageBuildApp.yaml
     parameters: 
       projectsolution: ${{ parameters.projectsolution }}  

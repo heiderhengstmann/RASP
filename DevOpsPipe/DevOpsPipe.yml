@@ -21,7 +21,7 @@ stages:
   #- template: Templates\StageAppSec.yaml
   - template: Templates\StageFoundation.yaml
     parameters:
-      parameterscommand: ${{ parameters.command }}
+      parameterscommand: ${{ parameters.parameterscommand }}
   - template: Templates\StageBuildApp.yaml
     parameters: 
       projectsolution: ${{ parameters.projectsolution }}  

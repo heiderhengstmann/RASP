@@ -15,7 +15,7 @@ parameters:
     default: '-out dev'  
   - name: commandOptionsApply
     default: 'dev' 
-  - name: parameters.command
+  - name: parameterscommand
     default: apply
 
 jobs:
@@ -52,10 +52,10 @@ jobs:
             commandOptions: ${{ parameters.commandOptionsPlan }}
             environmentServiceNameAzureRM: ${{ parameters.azureSubscription }}
         - task: TerraformTaskV1@0
-          displayName: 'TF ${{ parameters.command }}'
+          displayName: 'TF ${{ parameters.parameterscommand }}'
           inputs:
             provider: 'azurerm'
-            command: '${{ parameters.command }}'
+            command: '${{ parameters.parameterscommand }}'
             workingDirectory: 'tf'
             commandOptions: ${{ parameters.commandOptionsApply }}
             environmentServiceNameAzureRM: ${{ parameters.azureSubscription }}
